@@ -21,7 +21,6 @@ class _MyAppState extends State<MyApp> {
   final List<Country> countries = Country.ALL;
   List<Country> filteredCountries = Country.ALL;
   final TextEditingController _controller = TextEditingController();
-  Icon actionIcon = new Icon(Icons.search, color: Colors.white,);
   bool _IsSearching;
   Widget appBarTitle = new Text(
     "Search Example",
@@ -100,9 +99,9 @@ class _MyAppState extends State<MyApp> {
 
   void _handleSearchEnd() {
     setState(() {
-      this.actionIcon = new Icon(Icons.search, color: Colors.white,);
+      this.icon = Icon(Icons.search, color: Colors.white,);
       this.appBarTitle =
-      new Text("Search Sample", style: new TextStyle(color: Colors.white),);
+      new Text("Search Sample", style: TextStyle(color: Colors.white),);
       _IsSearching = false;
       _controller.clear();
       filteredCountries = countries;
