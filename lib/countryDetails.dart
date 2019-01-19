@@ -43,7 +43,7 @@ class _CountryDetailState extends State<CountryDetails> {
   @override
   Widget build(BuildContext context) {
     if (countryDetail == null) {
-      return new Scaffold(
+      return Scaffold(
         appBar: new AppBar(
           title: new Text("Loading..."),
         ),
@@ -63,10 +63,9 @@ class _CountryDetailState extends State<CountryDetails> {
                       width: 300,
                       child: SvgPicture.network(
                         countryDetail.flag,
-                        placeholderBuilder: (BuildContext context) =>
-                            new Container(
-                                padding: const EdgeInsets.all(30.0),
-                                child: const CircularProgressIndicator()),
+                        placeholderBuilder: (BuildContext context) => Container(
+                            padding: const EdgeInsets.all(30.0),
+                            child: const CircularProgressIndicator()),
                       ),
                     ),
                     Padding(

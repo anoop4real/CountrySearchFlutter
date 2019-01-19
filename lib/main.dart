@@ -21,12 +21,12 @@ class _MyAppState extends State<MyApp> {
   final List<Country> countries = Country.ALL;
   List<Country> filteredCountries = Country.ALL;
   final TextEditingController _controller = TextEditingController();
-  bool _IsSearching;
-  Widget appBarTitle = new Text(
-    "Search Example",
-    style: new TextStyle(color: Colors.white),
+  bool _IsSearching = false;
+  Widget appBarTitle = Text(
+    "Search Country",
+    style: TextStyle(color: Colors.white),
   );
-  Icon icon = new Icon(
+  Icon icon = Icon(
     Icons.search,
     color: Colors.white,
   );
@@ -60,30 +60,31 @@ class _MyAppState extends State<MyApp> {
   }
 
   Widget buildAppBar(BuildContext context) {
-    return new AppBar(centerTitle: true, title: appBarTitle, actions: <Widget>[
-      new IconButton(
+    return AppBar(centerTitle: true, title: appBarTitle, actions: <Widget>[
+      IconButton(
         icon: icon,
         onPressed: () {
           setState(() {
-            if (this.icon.icon == Icons.search) {
-              this.icon = new Icon(
+            if (!_IsSearching) {
+              this.icon =  Icon(
                 Icons.close,
                 color: Colors.white,
               );
-              this.appBarTitle = new TextField(
+              this.appBarTitle =  TextField(
                 controller: _controller,
-                style: new TextStyle(
+                style:  TextStyle(
                   color: Colors.white,
                 ),
-                decoration: new InputDecoration(
-                    prefixIcon: new Icon(Icons.search, color: Colors.white),
+                decoration:  InputDecoration(
+                    prefixIcon:  Icon(Icons.search, color: Colors.white),
                     hintText: "Search...",
-                    hintStyle: new TextStyle(color: Colors.white)),
-                onChanged: searchOperation,
+                    hintStyle:  TextStyle(color: Colors.white)),
+                onChanged: searchForText,
+
               );
-              _handleSearchStart();
+              _searchStarted();
             } else {
-              _handleSearchEnd();
+              _searchEnded();
             }
           });
         },
@@ -91,58 +92,29 @@ class _MyAppState extends State<MyApp> {
     ]);
   }
 
-  void _handleSearchStart() {
+  void _searchStarted() {
     setState(() {
       _IsSearching = true;
     });
   }
 
-  void _handleSearchEnd() {
+  void _searchEnded() {
     setState(() {
       this.icon = Icon(Icons.search, color: Colors.white,);
       this.appBarTitle =
-      new Text("Search Sample", style: TextStyle(color: Colors.white),);
+       Text("Search Country", style: TextStyle(color: Colors.white),);
       _IsSearching = false;
       _controller.clear();
       filteredCountries = countries;
     });
   }
 
-  void searchOperation(String searchText) {
+  void searchForText(String searchText) {
     setState(() {
-      List tempList = new List();
+      List tempList = List();
       //filteredCountries.map((country) => where(country.name.toLowerCase().contains(searchText.toLowerCase())));
       tempList = countries.where((country) => country.name.toLowerCase().contains(searchText.toLowerCase())).toList();
       filteredCountries = tempList;
     });
   }
 }
-
-/*
-
-class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
-  final List<Country> countries = Country.ALL;
-  @override
-  Widget build(BuildContext context) {
-    var scaffold = Scaffold(
-      appBar: AppBar(
-        title: Text('Country Search'),
-      ),
-      body: ListView.builder(
-          itemCount: countries.length,
-          itemBuilder: (context, index) {
-            final country = countries[index];
-
-            return ListTile(
-              title: Text(country.name),
-              subtitle: Text(country.isoCode),
-            );
-          }),
-    );
-    return MaterialApp(
-      home: scaffold,
-    );
-  }
-}
-*/
