@@ -61,16 +61,27 @@ class _CountryDetailState extends State<CountryDetails> {
                     Container(
                       height: 300,
                       width: 300,
-                      child: SvgPicture.network(
-                        countryDetail.flag,
-                        placeholderBuilder: (BuildContext context) => Container(
-                            padding: const EdgeInsets.all(30.0),
-                            child: const CircularProgressIndicator()),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(30),
+                        child: SvgPicture.network(
+                          countryDetail.flag,
+                          placeholderBuilder: (BuildContext context) => Container(
+                              padding: const EdgeInsets.all(30.0),
+                              child: const CircularProgressIndicator()),
+                        ),
                       ),
                     ),
                     Padding(
                       padding: EdgeInsets.all(10.0),
                     ),
+                    SizedBox(height: 10.0,),
+                    Row(
+                      children: <Widget>[Padding(
+                        padding: const EdgeInsets.all(25.0),
+                        child: Text(countryDetail.name, textAlign: TextAlign.left, style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),),
+                      )],
+                    ),
+                    SizedBox(height: 5.0,),
                     CountryListTile(countryDetail.data),
                   ],
                 ),
