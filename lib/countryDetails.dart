@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_country_picker/country.dart';
 import 'package:dio/dio.dart';
 import 'package:country_search/apiconstants.dart';
 import 'package:country_search/countryDataModel.dart';
 import 'package:country_search/countryListTile.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:iso_countries/country.dart';
 
 class CountryDetails extends StatefulWidget {
   final Country selectedCountry;
@@ -22,7 +22,7 @@ class _CountryDetailState extends State<CountryDetails> {
 
   fetchData() async {
     Dio dio = Dio();
-    var url = '$baseURL$codeRoute${widget.selectedCountry.isoCode}';
+    var url = '$baseURL$codeRoute${widget.selectedCountry.countryCode}';
     Response response = await dio.get(url);
 
     print(response.data);

@@ -1,6 +1,9 @@
+import 'dart:async';
+import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_country_picker/country.dart';
+//import 'package:flutter_country_picker/country.dart';
 import 'package:country_search/countryDetails.dart';
+import 'package:iso_countries/iso_countries.dart';
 
 void main() => runApp(MaterialApp(
       initialRoute: '/',
@@ -18,8 +21,8 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  final List<Country> countries = Country.ALL;
-  List<Country> filteredCountries = Country.ALL;
+  List<Country> countries;
+  List<Country> filteredCountries;
   final TextEditingController _controller = TextEditingController();
   bool _IsSearching = false;
   Widget appBarTitle = Text(
@@ -30,6 +33,13 @@ class _MyAppState extends State<MyApp> {
     Icons.search,
     color: Colors.white,
   );
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    prepareDefaultCountries();
+    super.initState();
+  }
   void OnTap(Country item) {
     print(item);
     Navigator.push(
@@ -38,18 +48,38 @@ class _MyAppState extends State<MyApp> {
             builder: (context) => CountryDetails(selectedCountry: item)));
   }
 
+  // Platform messages are asynchronous, so we initialize in an async method.
+  Future<void> prepareDefaultCountries() async {
+    List<Country> countries;
+    // Platform messages may fail, so we use a try/catch PlatformException.
+    try {
+      countries = await IsoCountries.iso_countries;
+    } on PlatformException {
+      countries = null;
+    }
+    // If the widget was removed from the tree while the asynchronous platform
+    // message was in flight, we want to discard the reply rather than calling
+    // setState to update our non-existent appearance.
+    if (!mounted) return;
+
+    setState(() {
+      this.countries = countries;
+      filteredCountries =  countries;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     var scaffold = Scaffold(
       appBar: buildAppBar(context),
       body: ListView.builder(
-          itemCount: filteredCountries.length,
+          itemCount: filteredCountries != null ? filteredCountries.length : 0,
           itemBuilder: (context, index) {
             final country = filteredCountries[index];
 
             return ListTile(
               title: Text(country.name),
-              subtitle: Text(country.isoCode),
+              subtitle: Text(country.countryCode),
               onTap: () => OnTap(country),
             );
           }),

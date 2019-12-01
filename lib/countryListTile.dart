@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_country_picker/country.dart';
-import 'package:country_search/countryDetails.dart';
+
 
 class CountryListTile extends StatelessWidget {
   Map<String, dynamic> country;
